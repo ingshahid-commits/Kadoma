@@ -4108,7 +4108,8 @@ async function aiSendMessage(){
     save('aiHistory', aiHistory);
   } catch(e){
     aiHideTyping();
-    aiAppendMessage('error', 'ارتباط با سرور برقرار نشد. اتصال اینترنت یا کلید API رو بررسی کن.');
+    var detail = (e && e.message) ? e.message : String(e);
+    aiAppendMessage('error', 'اتصال برقرار نشد.\nجزئیات فنی: ' + detail + '\nاگر این خطا «Failed to fetch» یا «NetworkError» است، احتمالاً OpenAI درخواست مستقیم از این دامنه را به‌خاطر CORS رد کرده — این محدودیت سمت OpenAI است، نه اشکال این کد.');
   }
   aiBusy = false;
   document.getElementById('aiSendBtn').disabled = false;
