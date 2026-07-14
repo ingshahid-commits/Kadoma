@@ -1518,6 +1518,181 @@
   #scholarRoot .owned-grid{grid-template-columns:repeat(2,1fr);}
   #scholarRoot .stats-grid{grid-template-columns:1fr 1fr;}
 }
+  /* ====== چت‌بات شناور ====== */
+#chatbot-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 9999;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* دکمه باز کردن */
+#chat-toggle {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    cursor: pointer;
+    box-shadow: 0 4px 20px rgba(102, 126, 234, 0.5);
+    transition: transform 0.3s;
+    user-select: none;
+}
+#chat-toggle:hover {
+    transform: scale(1.1);
+}
+
+/* پنجره چت */
+#chat-window {
+    display: none;
+    width: 380px;
+    height: 500px;
+    background: #1a1a2e;
+    border-radius: 16px;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.6);
+    flex-direction: column;
+    overflow: hidden;
+    position: absolute;
+    bottom: 80px;
+    right: 0;
+    border: 1px solid rgba(255,255,255,0.1);
+    resize: both;
+    min-width: 300px;
+    min-height: 400px;
+    max-width: 600px;
+    max-height: 700px;
+}
+
+/* هدر چت (قابل درگ) */
+#chat-header {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    padding: 12px 18px;
+    color: white;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: grab;
+    user-select: none;
+    flex-shrink: 0;
+}
+#chat-header:active {
+    cursor: grabbing;
+}
+
+/* بدنه چت */
+#chat-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background: #16213e;
+    overflow: hidden;
+}
+
+/* پیام‌ها */
+#chat-messages {
+    flex: 1;
+    padding: 15px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+#chat-messages::-webkit-scrollbar {
+    width: 4px;
+}
+#chat-messages::-webkit-scrollbar-track {
+    background: transparent;
+}
+#chat-messages::-webkit-scrollbar-thumb {
+    background: #667eea;
+    border-radius: 10px;
+}
+
+.message {
+    display: flex;
+    max-width: 85%;
+}
+.message.user {
+    align-self: flex-end;
+}
+.message.bot {
+    align-self: flex-start;
+}
+
+.message-content {
+    padding: 10px 14px;
+    border-radius: 12px;
+    font-size: 14px;
+    line-height: 1.6;
+    word-wrap: break-word;
+}
+.message.user .message-content {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+}
+.message.bot .message-content {
+    background: #1a1a2e;
+    color: #e0e0e0;
+    border: 1px solid rgba(255,255,255,0.08);
+}
+
+/* ورودی */
+#chat-input-area {
+    display: flex;
+    padding: 12px 15px;
+    background: #1a1a2e;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    gap: 10px;
+    flex-shrink: 0;
+}
+#chat-input {
+    flex: 1;
+    padding: 10px 14px;
+    background: #16213e;
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 25px;
+    color: #e0e0e0;
+    font-size: 14px;
+    outline: none;
+    transition: border 0.3s;
+}
+#chat-input:focus {
+    border-color: #667eea;
+}
+#chat-input::placeholder {
+    color: #888;
+}
+#chat-input-area button {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    border: none;
+    border-radius: 50%;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+    transition: transform 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#chat-input-area button:hover {
+    transform: scale(1.05);
+}
+
+/* حالت کوچک */
+#chat-window.minimized {
+    height: 60px !important;
+    min-height: 60px !important;
+}
+#chat-window.minimized #chat-body {
+    display: none;
+}
 </style>
 </head>
 <body>
@@ -5275,23 +5450,36 @@ const OPENAI_API_KEY = 'sk-...'; // کلید واقعی خودت رو جایگز
 }
   
 </script>
-  <!-- بخش چت با هوش مصنوعی -->
-<div style="margin:20px; padding:20px; background:#f5f5f5; border-radius:15px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
-    <h3 style="display:flex; align-items:center; gap:10px;">
-        🤖 مشاور هوشمند
-        <span style="font-size:12px; background:#667eea; color:white; padding:3px 12px; border-radius:20px;">آزمایشی</span>
-    </h3>
-    <div id="chat-box" style="height:250px; overflow-y:auto; background:white; border-radius:10px; padding:15px; border:1px solid #ddd; margin-bottom:10px;">
-        <p style="color:#999;">سلام! هر سوالی درباره مطالعه، برنامه‌ریزی یا کنکور داری، از من بپرس. 😊</p>
+<!-- ====== چت‌بات شناور ====== -->
+<div id="chatbot-container">
+    <!-- دکمه باز کردن چت -->
+    <div id="chat-toggle" onclick="toggleChat()">
+        🤖
     </div>
-    <div style="display:flex; gap:10px;">
-        <input type="text" id="user-question" placeholder="سوال خودت رو بپرس..." style="flex:1; padding:12px; border:1px solid #ddd; border-radius:8px;">
-        <button onclick="askAI()" style="background:linear-gradient(135deg,#667eea,#764ba2); color:white; padding:12px 25px; border:none; border-radius:8px; font-weight:bold; cursor:pointer;">
-            ارسال
-        </button>
-    </div>
-    <div style="margin-top:10px; font-size:11px; color:#999; text-align:center;">
-        ⚡ با کلیک روی ارسال، سوال شما به OpenAI ارسال می‌شود.
+    
+    <!-- پنجره چت -->
+    <div id="chat-window">
+        <!-- هدر چت (قابل درگ) -->
+        <div id="chat-header">
+            <span>🤖 مشاور هوشمند</span>
+            <div style="display:flex; gap:8px;">
+                <button onclick="toggleSize()" id="size-btn" style="background:transparent; border:none; color:white; cursor:pointer; font-size:16px;">⛶</button>
+                <button onclick="closeChat()" style="background:transparent; border:none; color:white; cursor:pointer; font-size:18px;">✕</button>
+            </div>
+        </div>
+        
+        <!-- محتوای چت -->
+        <div id="chat-body">
+            <div id="chat-messages">
+                <div class="message bot">
+                    <div class="message-content">سلام! 👋 من مشاور هوشمندت هستم. هر سوالی درباره مطالعه، برنامه‌ریزی یا کنکور داری، بپرس!</div>
+                </div>
+            </div>
+            <div id="chat-input-area">
+                <input type="text" id="chat-input" placeholder="سوال خودت رو بپرس...">
+                <button onclick="sendMessage()">➤</button>
+            </div>
+        </div>
     </div>
 </div>
 </body>
