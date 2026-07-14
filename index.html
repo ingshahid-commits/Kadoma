@@ -4077,7 +4077,7 @@ async function aiSendMessage(){
   aiShowTyping();
 
   try{
-    var res = await fetch('https://openai-proxy.zeus-0w05mq.workers.dev/', {
+    var res = await fetch('https://openai-proxy.zeus-0w05mq.workers.dev/v1/chat/completions', {
       method:'POST',
       headers:{
         'Content-Type':'application/json',
