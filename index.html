@@ -5226,6 +5226,73 @@ window.SQAddReward = function(coins, xp){
 })();
 
 })();
+  // کلید API خودت رو اینجا بذار (فقط برای تست!)
+const OPENAI_API_KEY = 'sk-...'; // کلید واقعی خودت رو جایگزین کن
+  async function askAI() {
+    const userInput = document.getElementById('user-question');
+    const question = userInput.value.trim();
+    if (!question) return;
+    
+    const chatBox = document.getElementById('chat-box');
+    chatBox.innerHTML += <p><strong>شما:</strong> ${question}</p>;
+    userInput.value = '';
+    chatBox.innerHTML += <p style="color:#666;">🤔 در حال فکر کردن...</p>;
+    chatBox.scrollTop = chatBox.scrollHeight;
+    
+    try {
+        const response = await fetch('https://api.openai.com/v1/chat/completions', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': Bearer ${OPENAI_API_KEY}
+            },
+            body: JSON.stringify({
+                model: 'gpt-4o-mini',
+                messages: [
+                    {
+                        role: 'system',
+                        content: 'تو مشاور تحصیلی هوشمند برای دانش‌آموزان ایرانی هستی. همیشه به فارسی پاسخ بده.'
+                    },
+                    { role: 'user', content: question }
+                ],
+                temperature: 0.7
+            })
+        });
+        
+        const data = await response.json();
+        chatBox.innerHTML = chatBox.innerHTML.replace('<p style="color:#666;">🤔 در حال فکر کردن...</p>', '');
+        
+        if (data.choices && data.choices[0]) {
+            chatBox.innerHTML += <p><strong>🤖 AI:</strong> ${data.choices[0].message.content}</p>;
+        } else {
+            chatBox.innerHTML += <p style="color:red;">خطا: ${data.error?.message || 'مشکلی پیش اومد'}</p>;
+        }
+    } catch (error) {
+        chatBox.innerHTML = chatBox.innerHTML.replace('<p style="color:#666;">🤔 در حال فکر کردن...</p>', '');
+        chatBox.innerHTML += <p style="color:red;">خطا در ارتباط با سرور</p>;
+    }
+    chatBox.scrollTop = chatBox.scrollHeight;
+}
+  
 </script>
+  <!-- بخش چت با هوش مصنوعی -->
+<div style="margin:20px; padding:20px; background:#f5f5f5; border-radius:15px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+    <h3 style="display:flex; align-items:center; gap:10px;">
+        🤖 مشاور هوشمند
+        <span style="font-size:12px; background:#667eea; color:white; padding:3px 12px; border-radius:20px;">آزمایشی</span>
+    </h3>
+    <div id="chat-box" style="height:250px; overflow-y:auto; background:white; border-radius:10px; padding:15px; border:1px solid #ddd; margin-bottom:10px;">
+        <p style="color:#999;">سلام! هر سوالی درباره مطالعه، برنامه‌ریزی یا کنکور داری، از من بپرس. 😊</p>
+    </div>
+    <div style="display:flex; gap:10px;">
+        <input type="text" id="user-question" placeholder="سوال خودت رو بپرس..." style="flex:1; padding:12px; border:1px solid #ddd; border-radius:8px;">
+        <button onclick="askAI()" style="background:linear-gradient(135deg,#667eea,#764ba2); color:white; padding:12px 25px; border:none; border-radius:8px; font-weight:bold; cursor:pointer;">
+            ارسال
+        </button>
+    </div>
+    <div style="margin-top:10px; font-size:11px; color:#999; text-align:center;">
+        ⚡ با کلیک روی ارسال، سوال شما به OpenAI ارسال می‌شود.
+    </div>
+</div>
 </body>
 </html>
