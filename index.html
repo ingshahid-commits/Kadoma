@@ -571,6 +571,173 @@
   .btn-del:hover{color:#E74C3C;}
   .hint-text{font-size:11.5px; color:var(--text-faint); margin:10px 2px 0;}
 
+  /* ===== AI ASSISTANT ===== */
+  .ai-card{
+    position:relative;
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:var(--radius-lg);
+    box-shadow:var(--shadow);
+    overflow:hidden;
+    height:calc(100vh - 190px);
+    min-height:420px;
+    display:flex;
+  }
+  .ai-orb{
+    position:absolute;
+    top:-120px; right:-90px;
+    width:280px; height:280px;
+    border-radius:50%;
+    background:radial-gradient(circle at 35% 35%, var(--accent-2), var(--accent) 55%, transparent 72%);
+    opacity:.16;
+    filter:blur(30px);
+    animation:aiOrbFloat 10s ease-in-out infinite;
+    pointer-events:none;
+  }
+  @keyframes aiOrbFloat{
+    0%,100%{transform:translate(0,0) scale(1);}
+    50%{transform:translate(-18px,22px) scale(1.08);}
+  }
+  .ai-card-inner{
+    position:relative; z-index:1;
+    display:flex; flex-direction:column;
+    width:100%; padding:20px 22px 16px;
+    min-height:0;
+  }
+  .ai-header-row{display:flex; align-items:center; justify-content:space-between; margin-bottom:14px;}
+  .ai-header-title{display:flex; align-items:center; gap:12px;}
+  .ai-header-icon{
+    width:38px; height:38px; flex-shrink:0;
+    border-radius:12px;
+    display:flex; align-items:center; justify-content:center;
+    background:linear-gradient(135deg, var(--accent), var(--accent-2));
+    color:#fff; font-size:18px;
+    box-shadow:0 4px 14px -4px var(--accent);
+    animation:aiIconPulse 2.4s ease-in-out infinite;
+  }
+  @keyframes aiIconPulse{0%,100%{transform:scale(1);}50%{transform:scale(1.08);}}
+  .ai-title{margin:0; font-size:16px; font-weight:800; color:var(--text);}
+  .ai-sub{margin:2px 0 0; font-size:12px; color:var(--text-dim);}
+
+  .ai-key-panel{
+    background:var(--surface-2);
+    border:1px solid var(--border-strong);
+    border-radius:var(--radius-md);
+    padding:14px 16px;
+    margin-bottom:14px;
+    animation:aiSlideDown .22s ease;
+  }
+  @keyframes aiSlideDown{from{opacity:0; transform:translateY(-8px);} to{opacity:1; transform:translateY(0);}}
+  .ai-key-actions{display:flex; gap:8px; margin-top:4px;}
+  .ai-key-actions .btn{flex:1;}
+
+  .ai-messages{
+    flex:1; min-height:0;
+    overflow-y:auto;
+    display:flex; flex-direction:column; gap:10px;
+    padding:6px 4px 10px;
+    scroll-behavior:smooth;
+  }
+  .ai-empty-state{
+    margin:auto; text-align:center; color:var(--text-faint);
+    display:flex; flex-direction:column; align-items:center; gap:10px;
+    max-width:280px;
+  }
+  .ai-empty-icon{font-size:26px; color:var(--accent-2); animation:aiIconPulse 2.4s ease-in-out infinite;}
+  .ai-empty-state p{margin:0; font-size:13px; line-height:1.8;}
+
+  .ai-msg{
+    max-width:78%;
+    padding:10px 14px;
+    border-radius:16px;
+    font-size:13.5px;
+    line-height:1.85;
+    white-space:pre-wrap;
+    word-break:break-word;
+    animation:aiMsgIn .28s cubic-bezier(.2,.8,.3,1);
+  }
+  @keyframes aiMsgIn{
+    from{opacity:0; transform:translateY(8px) scale(.98);}
+    to{opacity:1; transform:translateY(0) scale(1);}
+  }
+  .ai-msg.user{
+    align-self:flex-end;
+    background:linear-gradient(135deg, var(--accent), var(--accent-2));
+    color:#fff;
+    border-bottom-left-radius:6px;
+  }
+  .ai-msg.assistant{
+    align-self:flex-start;
+    background:var(--surface-2);
+    color:var(--text);
+    border:1px solid var(--border);
+    border-bottom-right-radius:6px;
+  }
+  .ai-msg.error{
+    align-self:flex-start;
+    background:rgba(231,76,60,.12);
+    border:1px solid rgba(231,76,60,.35);
+    color:#e57368;
+  }
+  .ai-typing{
+    align-self:flex-start;
+    display:flex; align-items:center; gap:4px;
+    padding:12px 16px;
+    background:var(--surface-2);
+    border:1px solid var(--border);
+    border-radius:16px;
+    border-bottom-right-radius:6px;
+    animation:aiMsgIn .25s ease;
+  }
+  .ai-typing span{
+    width:6px; height:6px; border-radius:50%;
+    background:var(--text-dim);
+    animation:aiTypingBounce 1.1s ease-in-out infinite;
+  }
+  .ai-typing span:nth-child(2){animation-delay:.15s;}
+  .ai-typing span:nth-child(3){animation-delay:.3s;}
+  @keyframes aiTypingBounce{0%,60%,100%{transform:translateY(0); opacity:.5;}30%{transform:translateY(-4px); opacity:1;}}
+
+  .ai-input-row{
+    display:flex; align-items:flex-end; gap:8px;
+    margin-top:12px;
+    padding-top:12px;
+    border-top:1px solid var(--border);
+  }
+  .ai-input-row textarea{
+    flex:1; resize:none;
+    max-height:120px;
+    padding:11px 14px;
+    border-radius:var(--radius-md);
+    border:1px solid var(--border-strong);
+    background:var(--surface-2);
+    color:var(--text);
+    font-size:14px;
+    font-family:'Vazirmatn',sans-serif;
+    outline:none;
+    line-height:1.6;
+    transition:border-color .15s;
+  }
+  .ai-input-row textarea:focus{border-color:var(--accent);}
+  .ai-send-btn{
+    width:44px; height:44px; flex-shrink:0;
+    border-radius:50%;
+    border:none;
+    background:linear-gradient(135deg, var(--accent), var(--accent-2));
+    color:#fff;
+    display:flex; align-items:center; justify-content:center;
+    cursor:pointer;
+    transition:transform .15s, filter .15s;
+  }
+  .ai-send-btn svg{width:19px; height:19px;}
+  .ai-send-btn:hover{transform:scale(1.06); filter:brightness(1.08);}
+  .ai-send-btn:active{transform:scale(.94);}
+  .ai-send-btn:disabled{opacity:.5; cursor:not-allowed; transform:none;}
+  @media (max-width:640px){
+    .ai-card{height:calc(100vh - 210px);}
+    .ai-msg{max-width:88%;}
+  }
+
   /* ===== SETTINGS ===== */
   .setting-row{display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; flex-wrap:wrap; gap:8px;}
   .setting-row label{font-size:13.5px; color:var(--text-dim);}
@@ -1518,181 +1685,6 @@
   #scholarRoot .owned-grid{grid-template-columns:repeat(2,1fr);}
   #scholarRoot .stats-grid{grid-template-columns:1fr 1fr;}
 }
-  /* ====== چت‌بات شناور ====== */
-#chatbot-container {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    z-index: 9999;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
-/* دکمه باز کردن */
-#chat-toggle {
-    width: 60px;
-    height: 60px;
-    background: linear-gradient(135deg, #667eea, #764ba2);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 30px;
-    cursor: pointer;
-    box-shadow: 0 4px 20px rgba(102, 126, 234, 0.5);
-    transition: transform 0.3s;
-    user-select: none;
-}
-#chat-toggle:hover {
-    transform: scale(1.1);
-}
-
-/* پنجره چت */
-#chat-window {
-    display: none;
-    width: 380px;
-    height: 500px;
-    background: #1a1a2e;
-    border-radius: 16px;
-    box-shadow: 0 8px 40px rgba(0,0,0,0.6);
-    flex-direction: column;
-    overflow: hidden;
-    position: absolute;
-    bottom: 80px;
-    right: 0;
-    border: 1px solid rgba(255,255,255,0.1);
-    resize: both;
-    min-width: 300px;
-    min-height: 400px;
-    max-width: 600px;
-    max-height: 700px;
-}
-
-/* هدر چت (قابل درگ) */
-#chat-header {
-    background: linear-gradient(135deg, #667eea, #764ba2);
-    padding: 12px 18px;
-    color: white;
-    font-weight: bold;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    cursor: grab;
-    user-select: none;
-    flex-shrink: 0;
-}
-#chat-header:active {
-    cursor: grabbing;
-}
-
-/* بدنه چت */
-#chat-body {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    background: #16213e;
-    overflow: hidden;
-}
-
-/* پیام‌ها */
-#chat-messages {
-    flex: 1;
-    padding: 15px;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-#chat-messages::-webkit-scrollbar {
-    width: 4px;
-}
-#chat-messages::-webkit-scrollbar-track {
-    background: transparent;
-}
-#chat-messages::-webkit-scrollbar-thumb {
-    background: #667eea;
-    border-radius: 10px;
-}
-
-.message {
-    display: flex;
-    max-width: 85%;
-}
-.message.user {
-    align-self: flex-end;
-}
-.message.bot {
-    align-self: flex-start;
-}
-
-.message-content {
-    padding: 10px 14px;
-    border-radius: 12px;
-    font-size: 14px;
-    line-height: 1.6;
-    word-wrap: break-word;
-}
-.message.user .message-content {
-    background: linear-gradient(135deg, #667eea, #764ba2);
-    color: white;
-}
-.message.bot .message-content {
-    background: #1a1a2e;
-    color: #e0e0e0;
-    border: 1px solid rgba(255,255,255,0.08);
-}
-
-/* ورودی */
-#chat-input-area {
-    display: flex;
-    padding: 12px 15px;
-    background: #1a1a2e;
-    border-top: 1px solid rgba(255,255,255,0.08);
-    gap: 10px;
-    flex-shrink: 0;
-}
-#chat-input {
-    flex: 1;
-    padding: 10px 14px;
-    background: #16213e;
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 25px;
-    color: #e0e0e0;
-    font-size: 14px;
-    outline: none;
-    transition: border 0.3s;
-}
-#chat-input:focus {
-    border-color: #667eea;
-}
-#chat-input::placeholder {
-    color: #888;
-}
-#chat-input-area button {
-    width: 40px;
-    height: 40px;
-    background: linear-gradient(135deg, #667eea, #764ba2);
-    border: none;
-    border-radius: 50%;
-    color: white;
-    font-size: 18px;
-    cursor: pointer;
-    transition: transform 0.2s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-#chat-input-area button:hover {
-    transform: scale(1.05);
-}
-
-/* حالت کوچک */
-#chat-window.minimized {
-    height: 60px !important;
-    min-height: 60px !important;
-}
-#chat-window.minimized #chat-body {
-    display: none;
-}
 </style>
 </head>
 <body>
@@ -1742,6 +1734,10 @@
       <button class="nav-btn" data-target="analytics">
         <svg viewBox="0 0 24 24"><path d="M4 19V11M10 19V5M16 19V13M22 19V9"/></svg>
         <span>تحلیل</span>
+      </button>
+      <button class="nav-btn" data-target="ai">
+        <svg viewBox="0 0 24 24"><path d="M12 3l1.6 4.8L18 9l-4.4 1.2L12 15l-1.6-4.8L6 9l4.4-1.2L12 3z"/><path d="M19 14l.8 2.4L22 17l-2.2.6L19 20l-.8-2.4L16 17l2.2-.6L19 14z"/></svg>
+        <span>دستیار</span>
       </button>
       <button class="nav-btn" data-target="settings">
         <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 13.5a8 8 0 000-3l1.8-1.4-2-3.4-2.1.5a8 8 0 00-2.6-1.5L14 2h-4l-.5 2.2a8 8 0 00-2.6 1.5l-2.1-.5-2 3.4L4.6 10.5a8 8 0 000 3L2.8 15l2 3.4 2.1-.6a8 8 0 002.6 1.6L10 22h4l.5-2.2a8 8 0 002.6-1.6l2.1.6 2-3.4z"/></svg>
@@ -2018,6 +2014,61 @@
       <div class="heatmap-tooltip" id="heatmapTooltip"></div>
 
       <!-- SETTINGS -->
+      <!-- AI ASSISTANT -->
+      <section class="tab-page" data-page="ai" id="page-ai" hidden>
+        <div class="ai-card">
+          <div class="ai-orb"></div>
+          <div class="ai-card-inner">
+            <div class="ai-header-row">
+              <div class="ai-header-title">
+                <span class="ai-header-icon">✦</span>
+                <div>
+                  <h2 class="ai-title">دستیار هوشمند</h2>
+                  <p class="ai-sub">همراه شخصی‌ت برای برنامه‌ریزی و مطالعه</p>
+                </div>
+              </div>
+              <button class="btn-icon" id="aiKeyToggle" title="تنظیمات API">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.4 13.5a8 8 0 000-3l1.8-1.4-2-3.4-2.1.5a8 8 0 00-2.6-1.5L14 2h-4l-.5 2.2a8 8 0 00-2.6 1.5l-2.1-.5-2 3.4L4.6 10.5a8 8 0 000 3L2.8 15l2 3.4 2.1-.6a8 8 0 002.6 1.6L10 22h4l.5-2.2a8 8 0 002.6-1.6l2.1.6 2-3.4z"/></svg>
+              </button>
+            </div>
+
+            <div class="ai-key-panel" id="aiKeyPanel" hidden>
+              <div class="input-row">
+                <label>OpenAI API Key</label>
+                <input type="password" id="aiApiKeyInput" placeholder="sk-..." autocomplete="off" spellcheck="false">
+              </div>
+              <p class="hint-text">این کلید فقط داخل همین مرورگر و روی همین دستگاه ذخیره می‌شه (localStorage) و مستقیماً از مرورگر به OpenAI ارسال می‌شه؛ به هیچ سروری غیر از OpenAI فرستاده نمی‌شه. این حالت فقط برای تست شخصیه — پابلیک نکن.</p>
+              <div class="ai-key-actions">
+                <button class="btn btn-secondary" id="aiSaveKeyBtn">ذخیره کلید</button>
+                <button class="btn" id="aiClearKeyBtn">حذف کلید</button>
+              </div>
+              <div class="input-row" style="margin-top:10px">
+                <label>مدل</label>
+                <select id="aiModelSelect">
+                  <option value="gpt-4o-mini">gpt-4o-mini</option>
+                  <option value="gpt-4o">gpt-4o</option>
+                  <option value="gpt-3.5-turbo">gpt-3.5-turbo</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="ai-messages" id="aiMessages">
+              <div class="ai-empty-state" id="aiEmptyState">
+                <span class="ai-empty-icon">✦</span>
+                <p>سلام! هر سوالی درباره‌ی درس، برنامه‌ریزی یا مدیریت زمان داری بپرس.</p>
+              </div>
+            </div>
+
+            <div class="ai-input-row">
+              <textarea id="aiInput" rows="1" placeholder="پیامت رو بنویس..."></textarea>
+              <button class="ai-send-btn" id="aiSendBtn" title="ارسال">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13"/><path d="M22 2L15 22l-4-9-9-4 20-7z"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section class="tab-page" data-page="settings" id="page-settings" hidden>
         <div class="card">
           <h2 class="card-title">ظاهر</h2>
@@ -3957,6 +4008,155 @@ function renderSettings(){
 }
 
 /* ============================================================
+   AI ASSISTANT
+   ============================================================ */
+var aiHistory = load('aiHistory', []);
+var aiApiKey = load('aiApiKey', '');
+var aiModel = load('aiModel', 'gpt-4o-mini');
+var aiBusy = false;
+
+function aiEscape(s){
+  return String(s).replace(/[&<>]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;'}[c]; });
+}
+
+function aiScrollToBottom(){
+  var box = document.getElementById('aiMessages');
+  if (box) box.scrollTop = box.scrollHeight;
+}
+
+function aiAppendMessage(role, text){
+  var box = document.getElementById('aiMessages');
+  var empty = document.getElementById('aiEmptyState');
+  if (empty) empty.remove();
+  var div = document.createElement('div');
+  div.className = 'ai-msg ' + role;
+  div.textContent = text;
+  box.appendChild(div);
+  aiScrollToBottom();
+  return div;
+}
+
+function aiShowTyping(){
+  var box = document.getElementById('aiMessages');
+  var t = document.createElement('div');
+  t.className = 'ai-typing';
+  t.id = 'aiTypingIndicator';
+  t.innerHTML = '<span></span><span></span><span></span>';
+  box.appendChild(t);
+  aiScrollToBottom();
+}
+function aiHideTyping(){
+  var t = document.getElementById('aiTypingIndicator');
+  if (t) t.remove();
+}
+
+function aiAutoGrow(el){
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight, 120) + 'px';
+}
+
+async function aiSendMessage(){
+  if (aiBusy) return;
+  var input = document.getElementById('aiInput');
+  var text = input.value.trim();
+  if (!text) return;
+  if (!aiApiKey){
+    document.getElementById('aiKeyPanel').hidden = false;
+    document.getElementById('aiApiKeyInput').focus();
+    showToast('اول کلید API رو وارد و ذخیره کن');
+    return;
+  }
+  input.value = '';
+  aiAutoGrow(input);
+  aiAppendMessage('user', text);
+  aiHistory.push({role:'user', content:text});
+  save('aiHistory', aiHistory);
+
+  aiBusy = true;
+  document.getElementById('aiSendBtn').disabled = true;
+  aiShowTyping();
+
+  try{
+    var res = await fetch('https://api.openai.com/v1/chat/completions', {
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json',
+        'Authorization':'Bearer ' + aiApiKey
+      },
+      body: JSON.stringify({
+        model: aiModel,
+        messages: [
+          {role:'system', content:'تو یک دستیار شخصی مفید، دوستانه و مختصر هستی که به فارسی پاسخ می‌دی و در برنامه‌ریزی درسی و مدیریت زمان کمک می‌کنی.'},
+        ].concat(aiHistory.slice(-20)),
+        temperature: 0.7
+      })
+    });
+    aiHideTyping();
+    if (!res.ok){
+      var errBody = await res.json().catch(function(){return null;});
+      var msg = (errBody && errBody.error && errBody.error.message) || ('خطای HTTP ' + res.status);
+      aiAppendMessage('error', 'خطا: ' + msg);
+      aiBusy = false;
+      document.getElementById('aiSendBtn').disabled = false;
+      return;
+    }
+    var data = await res.json();
+    var reply = (data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content) || '';
+    reply = reply.trim() || 'پاسخی دریافت نشد.';
+    aiAppendMessage('assistant', reply);
+    aiHistory.push({role:'assistant', content:reply});
+    save('aiHistory', aiHistory);
+  } catch(e){
+    aiHideTyping();
+    aiAppendMessage('error', 'ارتباط با سرور برقرار نشد. اتصال اینترنت یا کلید API رو بررسی کن.');
+  }
+  aiBusy = false;
+  document.getElementById('aiSendBtn').disabled = false;
+  input.focus();
+}
+
+function renderAI(){
+  var box = document.getElementById('aiMessages');
+  box.innerHTML = '';
+  if (!aiHistory.length){
+    box.innerHTML = '<div class="ai-empty-state" id="aiEmptyState"><span class="ai-empty-icon">✦</span><p>سلام! هر سوالی درباره‌ی درس، برنامه‌ریزی یا مدیریت زمان داری بپرس.</p></div>';
+  } else {
+    aiHistory.forEach(function(m){ aiAppendMessage(m.role, m.content); });
+  }
+  document.getElementById('aiApiKeyInput').value = aiApiKey;
+  document.getElementById('aiModelSelect').value = aiModel;
+  aiScrollToBottom();
+}
+
+document.getElementById('aiKeyToggle').addEventListener('click', function(){
+  var p = document.getElementById('aiKeyPanel');
+  p.hidden = !p.hidden;
+});
+document.getElementById('aiSaveKeyBtn').addEventListener('click', function(){
+  var v = document.getElementById('aiApiKeyInput').value.trim();
+  aiApiKey = v; save('aiApiKey', aiApiKey);
+  aiModel = document.getElementById('aiModelSelect').value; save('aiModel', aiModel);
+  showToast('کلید ذخیره شد ✅');
+  document.getElementById('aiKeyPanel').hidden = true;
+});
+document.getElementById('aiClearKeyBtn').addEventListener('click', function(){
+  aiApiKey = ''; save('aiApiKey', aiApiKey);
+  document.getElementById('aiApiKeyInput').value = '';
+  showToast('کلید حذف شد');
+});
+document.getElementById('aiModelSelect').addEventListener('change', function(){
+  aiModel = this.value; save('aiModel', aiModel);
+});
+document.getElementById('aiSendBtn').addEventListener('click', aiSendMessage);
+document.getElementById('aiInput').addEventListener('input', function(){ aiAutoGrow(this); });
+document.getElementById('aiInput').addEventListener('keydown', function(e){
+  if (e.key === 'Enter' && !e.shiftKey){
+    e.preventDefault();
+    aiSendMessage();
+  }
+});
+
+/* ============================================================
    DAILY NOTIFICATION
    ============================================================ */
 function maybeNotifyDaily(){
@@ -3980,7 +4180,7 @@ function maybeNotifyDaily(){
 /* ============================================================
    INIT
    ============================================================ */
-renderers = {home:renderHome, timer:renderTimer, lessons:renderLessons, exams:renderExams, player:renderPlaylist, alarm:renderAlarms, analytics:renderAnalytics, settings:renderSettings};
+renderers = {home:renderHome, timer:renderTimer, lessons:renderLessons, exams:renderExams, player:renderPlaylist, alarm:renderAlarms, analytics:renderAnalytics, settings:renderSettings, ai:renderAI};
 
 applyTheme();
 renderHome();
@@ -4230,7 +4430,7 @@ const WORLDS=[
   {id:'sky',name:'پادشاهی آسمان',minLvl:5,items:[
     {id:'windblade',n:'شمشیر باد',p:1300,desc:'شمشیری سبک و برنده از فولاد آسمانی',lore:'ساخته‌شده در کارگاه‌های بلندای ابرها',prestige:false},
     {id:'featherarmor',n:'زره پر فرشته',p:1900,desc:'زرهی سبک از پرهای موجودات آسمانی',lore:'وزنش به اندازه یک نفس است',prestige:false},
-    {id:'skycrystal',n:'کریستال آسمانی',p:2100,desc:'کریستالی که همیشه در هوا معلق می‌ماند',lore:'انرژی جزایر شناور در دل آن ذخیره شده',prestige:true},
+    {id:'skycrystal',n:'کریستال آسمانی',p:2100,desc:'کریستالی که همیشه در هوا معلق می‌ماند',lore:'انرژی جزایر شناور در دل آن ذخیره شده',prestige:false},
     {id:'cloudthrone',n:'تخت ابری',p:1700,desc:'تختی از ابرهای متراکم و درخشان',lore:'فقط پادشاهان آسمان بر آن می‌نشینند',prestige:false},
     {id:'griffinwing',n:'بال گریفین',p:7500,desc:'بال اصیل نگهبان افسانه‌ای آسمان',lore:'تنها یک گریفین سفید در تاریخ دیده شده',prestige:true},
     {id:'bg_sky',n:'پس‌زمینه جزایر شناور',p:2200,desc:'جزایر ابری در حال چرخش پشت آواتار تو',lore:'پس‌زمینه متحرک — پشت کاراکترت فعال می‌شود',prestige:false,bg:true,theme:'sky'},
@@ -4251,7 +4451,7 @@ const WORLDS=[
     {id:'glaciercrown',n:'تاج یخبندان',p:9000,desc:'تاج آخرین امپراتور یخی',lore:'گفته می‌شود خودِ زمستان آن را تراشیده',prestige:true},
     {id:'bg_frozen',n:'پس‌زمینه بوران یخی',p:2200,desc:'بوران برف در حرکت پشت آواتار تو',lore:'پس‌زمینه متحرک — پشت کاراکترت فعال می‌شود',prestige:false,bg:true,theme:'frozen'},
   ]},
-  {id:'temple',name:'معبد باستانی',minLvl:7,items:[
+  {id:'temple',name:'معبد باستانی',minLvl:8,items:[
     {id:'stonetablet',n:'لوح سنگی',p:1600,desc:'لوحی حکاکی‌شده با نوشته‌های گمشده',lore:'رمزگشایی آن هنوز کامل نشده',prestige:false},
     {id:'incenseburner',n:'مجمر بخور مقدس',p:1400,desc:'مجمری که دود آن هیچ‌گاه قطع نمی‌شود',lore:'در مراسم‌های معبد استفاده می‌شد',prestige:false},
     {id:'goldenidol',n:'بت طلایی',p:2800,desc:'مجسمه‌ای طلایی از خدای فراموش‌شده',lore:'نگهبانان معبد جانشان را برایش دادند',prestige:false},
@@ -4259,7 +4459,7 @@ const WORLDS=[
     {id:'templeguardian',n:'نگهبان سنگی معبد',p:9500,desc:'آخرین نگهبان بیدارشده‌ی معبد باستانی',lore:'هزاران سال در سکوت ایستاده بود',prestige:true},
     {id:'bg_temple',n:'پس‌زمینه پرتو نور معبد',p:2200,desc:'پرتوهای طلایی نور پشت آواتار تو',lore:'پس‌زمینه متحرک — پشت کاراکترت فعال می‌شود',prestige:false,bg:true,theme:'temple'},
   ]},
-  {id:'shadow',name:'قلمرو سایه',minLvl:7,items:[
+  {id:'shadow',name:'قلمرو سایه',minLvl:9,items:[
     {id:'voidcloak',n:'ردای پوچی',p:2200,desc:'ردایی که نور را در خود فرو می‌برد',lore:'پوشیدنش یعنی محو شدن از دید',prestige:false},
     {id:'wraithmask',n:'نقاب روح سرگردان',p:2100,desc:'نقاب ارواحی که راه بازگشت را گم کرده‌اند',lore:'صدای زوزه در شب از آن شنیده می‌شود',prestige:false},
     {id:'soulshard',n:'تکه‌ی روح',p:2400,desc:'قطعه‌ای از روحی جداشده از قلمرو سایه',lore:'سرد است، اما هنوز می‌تپد',prestige:false},
@@ -4271,7 +4471,7 @@ const WORLDS=[
     {id:'sword_e',n:'تیغ ساموراییِ کهن',p:1400,desc:'شمشیری منحنی از فولاد تاشده اصیل ژاپنی',lore:'در کوره‌های مخفی کوهستانی جعل شده',prestige:false},
     {id:'kabuto',n:'کابوتوی جنگی',p:1800,desc:'کلاهخود شاخدار فرماندهان سامورایی',lore:'در میدان نبرد نشانه‌ی رتبه و قدرت بود',prestige:false},
     {id:'scroll_e',n:'طومار حکمت',p:1300,desc:'طوماری با نوشته‌های رمزآلود باستانی',lore:'گفته می‌شود رازهای ازدست‌رفته را در خود دارد',prestige:false},
-    {id:'crystal_e',n:'بلور روح آبی',p:2000,desc:'کریستالی درخشان با انرژی معنوی',lore:'در معابد کوهستانی به‌عنوان طلسم محافظ نگه‌داری می‌شد',prestige:true},
+    {id:'crystal_e',n:'بلور روح آبی',p:2000,desc:'کریستالی درخشان با انرژی معنوی',lore:'در معابد کوهستانی به‌عنوان طلسم محافظ نگه‌داری می‌شد',prestige:false},
     {id:'taobook',n:'کتاب تعادل',p:1700,desc:'کتابی کهن با نماد یین و یانگ',lore:'حکمت تعادل میان نور و تاریکی در آن نوشته شده',prestige:false},
     {id:'potion_e',n:'معجون چی',p:1500,desc:'معجونی آبی‌رنگ برای بازیابی انرژی درونی',lore:'راهبان کوهستان آن را پیش از مراقبه می‌نوشیدند',prestige:false},
     {id:'lantern_e',n:'فانوس روح‌راهنما',p:1600,desc:'فانوسی که مسیر ارواح گمشده را روشن می‌کند',lore:'در شب‌های مه‌آلود در معابد آویزان می‌شد',prestige:false},
@@ -5401,152 +5601,6 @@ window.SQAddReward = function(coins, xp){
 })();
 
 })();
- // ====== چت‌بات کامل ======
-const OPENAI_API_KEY = 'sk-...'; // کلید خودت رو بذار
-
-let isMinimized = false;
-
-function toggleChat() {
-    const window = document.getElementById('chat-window');
-    const toggle = document.getElementById('chat-toggle');
-    if (!window) {
-        console.error('chat-window پیدا نشد!');
-        return;
-    }
-    if (window.style.display === 'flex') {
-        window.style.display = 'none';
-        if (toggle) toggle.style.display = 'flex';
-    } else {
-        window.style.display = 'flex';
-        if (toggle) toggle.style.display = 'none';
-    }
-}
-
-function closeChat() {
-    document.getElementById('chat-window').style.display = 'none';
-    document.getElementById('chat-toggle').style.display = 'flex';
-}
-
-function toggleSize() {
-    const window = document.getElementById('chat-window');
-    isMinimized = !isMinimized;
-    if (isMinimized) {
-        window.classList.add('minimized');
-    } else {
-        window.classList.remove('minimized');
-    }
-}
-
-// ====== ارسال پیام ======
-async function sendMessage() {
-    const input = document.getElementById('chat-input');
-    if (!input) return;
-    const message = input.value.trim();
-    if (!message) return;
-
-    const messagesContainer = document.getElementById('chat-messages');
-    
-    messagesContainer.innerHTML += 
-        <div class="message user">
-            <div class="message-content">${message}</div>
-        </div>
-    ;
-    input.value = '';
-    messagesContainer.scrollTop = messagesContainer.scrollHeight;
-
-    const loadingId = Date.now();
-    messagesContainer.innerHTML += 
-        <div class="message bot" id="msg-${loadingId}">
-            <div class="message-content" style="color:#888;">🤔 در حال فکر کردن...</div>
-        </div>
-    ;
-    messagesContainer.scrollTop = messagesContainer.scrollHeight;
-
-    try {
-        const response = await fetch('https://api.openai.com/v1/chat/completions', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': Bearer ${OPENAI_API_KEY}
-            },
-            body: JSON.stringify({
-                model: 'gpt-4o-mini',
-                messages: [
-                    { role: 'system', content: 'تو مشاور تحصیلی هوشمند برای دانش‌آموزان ایرانی هستی. همیشه به فارسی پاسخ بده.' },
-                    { role: 'user', content: message }
-                ],
-                temperature: 0.7
-            })
-        });
-
-        const data = await response.json();
-        document.getElementById(msg-${loadingId}).remove();
-
-        if (data.choices && data.choices[0]) {
-            messagesContainer.innerHTML += 
-                <div class="message bot">
-                    <div class="message-content">${data.choices[0].message.content}</div>
-                </div>
-            ;
-        } else {
-            messagesContainer.innerHTML += 
-                <div class="message bot">
-                    <div class="message-content" style="color:#ff6b6b;">❌ خطا: ${data.error?.message || 'مشکلی پیش اومد'}</div>
-                </div>
-            ;
-        }
-    } catch (error) {
-        document.getElementById(msg-${loadingId}).remove();
-        messagesContainer.innerHTML += 
-            <div class="message bot">
-                <div class="message-content" style="color:#ff6b6b;">❌ خطا در ارتباط با سرور</div>
-            </div>
-        ;
-    }
-    messagesContainer.scrollTop = messagesContainer.scrollHeight;
-}
-
-// ====== دکمه Enter ======
-document.addEventListener('DOMContentLoaded', function() {
-    const input = document.getElementById('chat-input');
-    if (input) {
-        input.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') sendMessage();
-        });
-    }
-});
 </script>
-<!-- ====== چت‌بات شناور ====== -->
-<div id="chatbot-container">
-    <!-- دکمه باز کردن چت -->
-    <div id="chat-toggle" onclick="toggleChat()">
-        🤖
-    </div>
-    
-    <!-- پنجره چت -->
-    <div id="chat-window">
-        <!-- هدر چت (قابل درگ) -->
-        <div id="chat-header">
-            <span>🤖 مشاور هوشمند</span>
-            <div style="display:flex; gap:8px;">
-                <button onclick="toggleSize()" id="size-btn" style="background:transparent; border:none; color:white; cursor:pointer; font-size:16px;">⛶</button>
-                <button onclick="closeChat()" style="background:transparent; border:none; color:white; cursor:pointer; font-size:18px;">✕</button>
-            </div>
-        </div>
-        
-        <!-- محتوای چت -->
-        <div id="chat-body">
-            <div id="chat-messages">
-                <div class="message bot">
-                    <div class="message-content">سلام! 👋 من مشاور هوشمندت هستم. هر سوالی درباره مطالعه، برنامه‌ریزی یا کنکور داری، بپرس!</div>
-                </div>
-            </div>
-            <div id="chat-input-area">
-                <input type="text" id="chat-input" placeholder="سوال خودت رو بپرس...">
-                <button onclick="sendMessage()">➤</button>
-            </div>
-        </div>
-    </div>
-</div>
 </body>
 </html>
