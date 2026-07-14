@@ -5448,7 +5448,17 @@ const OPENAI_API_KEY = 'sk-proj-JYNf_J_TtWeihaCC-Yb7UefaZ9uQiQyKqxj72ot0a3X9orOm
     }
     chatBox.scrollTop = chatBox.scrollHeight;
 }
-  
+  function toggleChat() {
+    const window = document.getElementById('chat-window');
+    const toggle = document.getElementById('chat-toggle');
+    if (window.style.display === 'flex') {
+        window.style.display = 'none';
+        toggle.style.display = 'flex';
+    } else {
+        window.style.display = 'flex';
+        toggle.style.display = 'none';
+    }
+}
 </script>
 <!-- ====== چت‌بات شناور ====== -->
 <div id="chatbot-container">
