@@ -5401,19 +5401,67 @@ window.SQAddReward = function(coins, xp){
 })();
 
 })();
-  // کلید API خودت رو اینجا بذار (فقط برای تست!)
-const OPENAI_API_KEY = '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'; // کلید واقعی خودت رو جایگزین کن
-  async function askAI() {
-    const userInput = document.getElementById('user-question');
-    const question = userInput.value.trim();
-    if (!question) return;
+ // ====== چت‌بات کامل ======
+const OPENAI_API_KEY = 'sk-...'; // کلید خودت رو بذار
+
+let isMinimized = false;
+
+function toggleChat() {
+    const window = document.getElementById('chat-window');
+    const toggle = document.getElementById('chat-toggle');
+    if (!window) {
+        console.error('chat-window پیدا نشد!');
+        return;
+    }
+    if (window.style.display === 'flex') {
+        window.style.display = 'none';
+        if (toggle) toggle.style.display = 'flex';
+    } else {
+        window.style.display = 'flex';
+        if (toggle) toggle.style.display = 'none';
+    }
+}
+
+function closeChat() {
+    document.getElementById('chat-window').style.display = 'none';
+    document.getElementById('chat-toggle').style.display = 'flex';
+}
+
+function toggleSize() {
+    const window = document.getElementById('chat-window');
+    isMinimized = !isMinimized;
+    if (isMinimized) {
+        window.classList.add('minimized');
+    } else {
+        window.classList.remove('minimized');
+    }
+}
+
+// ====== ارسال پیام ======
+async function sendMessage() {
+    const input = document.getElementById('chat-input');
+    if (!input) return;
+    const message = input.value.trim();
+    if (!message) return;
+
+    const messagesContainer = document.getElementById('chat-messages');
     
-    const chatBox = document.getElementById('chat-box');
-    chatBox.innerHTML += <p><strong>شما:</strong> ${question}</p>;
-    userInput.value = '';
-    chatBox.innerHTML += <p style="color:#666;">🤔 در حال فکر کردن...</p>;
-    chatBox.scrollTop = chatBox.scrollHeight;
-    
+    messagesContainer.innerHTML += 
+        <div class="message user">
+            <div class="message-content">${message}</div>
+        </div>
+    ;
+    input.value = '';
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+    const loadingId = Date.now();
+    messagesContainer.innerHTML += 
+        <div class="message bot" id="msg-${loadingId}">
+            <div class="message-content" style="color:#888;">🤔 در حال فکر کردن...</div>
+        </div>
+    ;
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
     try {
         const response = await fetch('https://api.openai.com/v1/chat/completions', {
             method: 'POST',
@@ -5424,41 +5472,49 @@ const OPENAI_API_KEY = 'sk-proj-JYNf_J_TtWeihaCC-Yb7UefaZ9uQiQyKqxj72ot0a3X9orOm
             body: JSON.stringify({
                 model: 'gpt-4o-mini',
                 messages: [
-                    {
-                        role: 'system',
-                        content: 'تو مشاور تحصیلی هوشمند برای دانش‌آموزان ایرانی هستی. همیشه به فارسی پاسخ بده.'
-                    },
-                    { role: 'user', content: question }
+                    { role: 'system', content: 'تو مشاور تحصیلی هوشمند برای دانش‌آموزان ایرانی هستی. همیشه به فارسی پاسخ بده.' },
+                    { role: 'user', content: message }
                 ],
                 temperature: 0.7
             })
         });
-        
+
         const data = await response.json();
-        chatBox.innerHTML = chatBox.innerHTML.replace('<p style="color:#666;">🤔 در حال فکر کردن...</p>', '');
-        
+        document.getElementById(msg-${loadingId}).remove();
+
         if (data.choices && data.choices[0]) {
-            chatBox.innerHTML += <p><strong>🤖 AI:</strong> ${data.choices[0].message.content}</p>;
+            messagesContainer.innerHTML += 
+                <div class="message bot">
+                    <div class="message-content">${data.choices[0].message.content}</div>
+                </div>
+            ;
         } else {
-            chatBox.innerHTML += <p style="color:red;">خطا: ${data.error?.message || 'مشکلی پیش اومد'}</p>;
+            messagesContainer.innerHTML += 
+                <div class="message bot">
+                    <div class="message-content" style="color:#ff6b6b;">❌ خطا: ${data.error?.message || 'مشکلی پیش اومد'}</div>
+                </div>
+            ;
         }
     } catch (error) {
-        chatBox.innerHTML = chatBox.innerHTML.replace('<p style="color:#666;">🤔 در حال فکر کردن...</p>', '');
-        chatBox.innerHTML += <p style="color:red;">خطا در ارتباط با سرور</p>;
+        document.getElementById(msg-${loadingId}).remove();
+        messagesContainer.innerHTML += 
+            <div class="message bot">
+                <div class="message-content" style="color:#ff6b6b;">❌ خطا در ارتباط با سرور</div>
+            </div>
+        ;
     }
-    chatBox.scrollTop = chatBox.scrollHeight;
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
 }
-  function toggleChat() {
-    const window = document.getElementById('chat-window');
-    const toggle = document.getElementById('chat-toggle');
-    if (window.style.display === 'flex') {
-        window.style.display = 'none';
-        toggle.style.display = 'flex';
-    } else {
-        window.style.display = 'flex';
-        toggle.style.display = 'none';
+
+// ====== دکمه Enter ======
+document.addEventListener('DOMContentLoaded', function() {
+    const input = document.getElementById('chat-input');
+    if (input) {
+        input.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') sendMessage();
+        });
     }
-}
+});
 </script>
 <!-- ====== چت‌بات شناور ====== -->
 <div id="chatbot-container">
